@@ -4,29 +4,39 @@ import axios from "axios";
 
 function App() {
   const [product, setProduct] = useState([]);
-  const [count, setCount] = useState(0);
+  const [loading, setloading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     getProducts();
-  },[count]);
+  },[]);
 
   const getProducts = async () => {
     try {
       const productData = await axios.get("http://localhost:4001/products");
       console.log(productData.data.data);
       setProduct(productData.data.data);
+      setloading(false);
     } catch (error) {
+      setError(error);
+      setloading(false);
       console.error("Fail to fetch data...");
     }
   };
 
+  if(loading){
+    return <div>Loading...</div>
+  }
+
+  if(error){
+    return <div>Error</div>
+  }
+
   const handleDelete = async (index,item) => {
-    setProduct(product.toSpliced(index,1));
-    
+    // setProduct(product.toSpliced(index,1));
     try {
       await axios.delete(`http://localhost:4001/products/${item}`)
-      // getProducts();
-      setCount(count+1);
+      getProducts();
 
     }
     catch (error) {
