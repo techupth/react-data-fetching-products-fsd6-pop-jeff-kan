@@ -8,12 +8,12 @@ function App() {
   // const [count, setCount] = useState(0);
   const dataProduct = async () => {
     try {
-      setLoading(true);
+      setLoading("Loadding");
       const datas = await axios.get("http://localhost:4001/products");
       setProducts(datas.data.data);
       setLoading(false);
     } catch (error) {
-      setLoading(false);
+      setLoading("Fetching Error...");
       console.log(error);
     }
   };
@@ -27,9 +27,9 @@ function App() {
         <h1 className="app-title">Products</h1>
       </div>
       <div className="product-list">
-        {loading[0] ? (
+        {loading ? (
           <div className="app-wrapper">
-            <h1 className="app-title">Loading</h1>
+            <h1 className="app-title">{loading}</h1>
           </div>
         ) : (
           products.map((product, index) => {
