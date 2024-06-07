@@ -5,6 +5,7 @@ import axios from "axios";
 function App() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  // const [count, setCount] = useState(0);
   const dataProduct = async () => {
     try {
       setLoading(true);
@@ -26,9 +27,9 @@ function App() {
         <h1 className="app-title">Products</h1>
       </div>
       <div className="product-list">
-        {loading ? (
+        {loading[0] ? (
           <div className="app-wrapper">
-            <h1 className="app-title">Loading...</h1>
+            <h1 className="app-title">Loading</h1>
           </div>
         ) : (
           products.map((product, index) => {
@@ -49,11 +50,13 @@ function App() {
                 </div>
                 <button
                   className="delete-button"
-                  onClick={() => {
-                    const result = axios.delete(
+                  onClick={async () => {
+                    await axios.delete(
                       "http://localhost:4001/products/" + product.id
                     );
-                    return setProducts(products.toSpliced(index, 1)), result;
+                    dataProduct();
+                    // setCount(count + 1);
+                    // return setProducts(products.toSpliced(index, 1));
                   }}
                 >
                   x
